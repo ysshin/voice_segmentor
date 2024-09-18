@@ -1,5 +1,5 @@
 
-# voice_segmentor
+# voice_segmentor
 
 A set of scripts that reads media -> detect voice from the media -> create wav for each sentences
 
@@ -17,13 +17,14 @@ python folder_convert_media_to_wav.py <folder name>
 ---
 ### `segment-media-vad-onx.py`
 Reads either a single wave file or all the wave files in a specific folder, and run Voice Activity Dector (with onx option enabled) to generate a folder that has each sentences as wave file
+it internally uses https://github.com/snakers4/silero-vad for Voice activity Detection
 
 **Usage:**
 For a single wave file
 ```bash
-python hsegment-media-vad-onx.py <wave file>
+python segment-media-vad-onx.py <wave file>
 ```
 For all wave file in a folder
 ```bash
-python hsegment-media-vad-onx.py -f <folder>
+python segment-media-vad-onx.py -f <folder>
 ```
