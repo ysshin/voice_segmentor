@@ -22,13 +22,7 @@ def filter_by_db_level(audio_segment, min_db):
     db = 20 * np.log10(rms)
     return db >= min_db
 
-def split_wav_by_voice(input_wav, min_db_level):
-    # Load the model
-    model, utils = torch.hub.load(repo_or_dir='snakers4/silero-vad',
-                                  model='silero_vad',
-                                  force_reload=True,
-                                  onnx=True)
-
+def split_wav_by_voice(input_wav, min_db_level, model, utils):
     (get_speech_ts, save_audio, read_audio, VADIterator, collect_chunks) = utils
 
     # Read the audio file
@@ -87,12 +81,18 @@ def split_wav_by_voice(input_wav, min_db_level):
     print(f"{len(filtered_timestamps)} voice segments above {min_db_level} dB extracted and saved to {output_folder}")
 
 def process_folder(folder, min_db_level):
+    # Load the model once
+    model, utils = torch.hub.load(repo_or_dir='snakers4/silero-vad',
+                                  model='silero_vad',
+                                  force_reload=True,
+                                  onnx=True)
+
     # Process all .wav files in the given folder
     for filename in os.listdir(folder):
         if filename.endswith(".wav"):
             input_wav = os.path.join(folder, filename)
             print(f"Processing {input_wav}")
-            split_wav_by_voice(input_wav, min_db_level)
+            split_wav_by_voice(input_wav, min_db_level, model, utils)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Process WAV files for speech separation with Sepformer.")
@@ -111,7 +111,12 @@ if __name__ == "__main__":
         if not os.path.exists(args.input_wav):
             print("Error: The input WAV file does not exist.")
             sys.exit(1)
-        split_wav_by_voice(args.input_wav, args.min_db_level)
+        # Load the model once for a single file processing case
+        model, utils = torch.hub.load(repo_or_dir='snakers4/silero-vad',
+                                      model='silero_vad',
+                                      force_reload=True,
+                                      onnx=True)
+        split_wav_by_voice(args.input_wav, args.min_db_level, model, utils)
     else:
         print("Usage: python script.py <input_wav> or -f <folder> [--min_db_level]")
         sys.exit(1)
