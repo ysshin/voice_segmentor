@@ -1,6 +1,7 @@
 import os
 import sys
 import subprocess
+import argparse
 
 # Function to convert audio and video files to 16-bit PCM wav using ffmpeg
 def convert_to_wav_ffmpeg(input_path, output_path):
@@ -37,12 +38,24 @@ def convert_to_wav(folder_path):
             # Convert the file using ffmpeg
             convert_to_wav_ffmpeg(input_path, wav_path)
 
-# Check if folder path is passed as a command-line argument
-if len(sys.argv) != 2:
-    print("Usage: python script.py <folder_path>")
-else:
-    folder_path = sys.argv[1]
+# Main function to handle command-line arguments
+def main():
+    # Create an argument parser
+    parser = argparse.ArgumentParser(description="Convert audio/video files to 16-bit PCM WAV format.")
+    
+    # Add the mandatory -f argument for the folder path
+    parser.add_argument('-f', '--folder', required=True, help="Folder path containing files to convert")
+    
+    # Parse the arguments
+    args = parser.parse_args()
+    
+    # Check if the folder exists
+    folder_path = args.folder
     if os.path.isdir(folder_path):
         convert_to_wav(folder_path)
     else:
         print(f"Error: {folder_path} is not a valid directory")
+
+# Entry point of the script
+if __name__ == "__main__":
+    main()

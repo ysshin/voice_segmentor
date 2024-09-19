@@ -80,7 +80,8 @@ def split_wav_by_voice(input_wav, min_db_level):
         segment_audio = wav_data[start:end]
         if filter_by_db_level(segment_audio, min_db_level):
             filtered_timestamps.append(segment)
-            segment_filename = f'{output_folder}/{original_filename}_segment_{len(filtered_timestamps):03}.wav'
+            # Updated to use 4-digit numbering
+            segment_filename = f'{output_folder}/{original_filename}_segment_{len(filtered_timestamps):04}.wav'
             sf.write(segment_filename, segment_audio, SAMPLING_RATE)
 
     print(f"{len(filtered_timestamps)} voice segments above {min_db_level} dB extracted and saved to {output_folder}")
