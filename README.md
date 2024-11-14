@@ -28,3 +28,17 @@ For all wave file in a folder
 ```bash
 python segment-media-vad-onx.py -f <folder>
 ```
+---
+### `labeling-with-whipser.py`
+Read a folder that has list of wave files (assuming it's a segmented wav files by segment-media-vad-onx.py`, 
+1. create a excel file that has the same name as the folder
+2. add header row of Filename (first column),  Transcription (second column) to the first row
+3. for the first column, fill up all the rows withe the wav file names
+4. for the second column, fill up all the rows by running whisper to the corresponding wav file
+5. once done, save that to the excel file
+
+**Usage:**
+For all wave file in a folder
+```bash
+python labeling-with-whipser.py -f <folder>
+```
