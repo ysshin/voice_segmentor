@@ -12,7 +12,7 @@ ffmpeg uses default which is 16 bit PCM, 48Khz, 2ch
 
 **Usage:**
 ```bash
-python folder_convert_media_to_wav.py <folder name>
+python folder_convert_media_to_wav.py -f <folder name>
 ```
 ---
 ### `segment-media-vad-onx.py`
